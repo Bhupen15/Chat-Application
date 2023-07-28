@@ -28,7 +28,7 @@ const SignUp = () => {
         setLoading(true);
   if(!name || !email|| !password || !confirmpassword){
     toast({
-        title: "Please fill all the fields>>>>>",
+        title: "Please fill all the fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
