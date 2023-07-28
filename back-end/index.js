@@ -5,7 +5,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db.js');
 const userRoutes = require('./routes/userRoutes.js')
-
+const notFound = require("./middilewares/errorMiddileware.js")
+const errorHandler = require("./middilewares/errorMiddileware.js")
 
 dotenv.config()
 connectDB();
@@ -17,6 +18,9 @@ app.get("/", (req, res) => {
 })
 
 app.use('/api/user', userRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5001
 

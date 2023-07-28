@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 const User = require("../models/userModel");
 const generateToken = require('../config/generateToken');
 
+//function for new user registration 
 const registerUSer = asyncHandler(async (req, res) => {
 
     const { name, email, password, pic } = req.body;
@@ -42,11 +43,12 @@ const registerUSer = asyncHandler(async (req, res) => {
     }
 })
 
+//function for registered user login
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email })
-    if (user) {
+    if (user && (await user.matchPassword(password))) {
         res.json({
             _id: user._id,
             name: user.name,
@@ -56,9 +58,9 @@ const authUser = asyncHandler(async (req, res) => {
         })
     }
     else {
-        rs.status(401);
+        res.status(401);
         throw new Error("Invalid email or password");
     }
 })
 
-module.exports = { registerUSer };
+module.exports = { registerUSer, authUser };

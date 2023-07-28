@@ -5,19 +5,68 @@ import { VStack } from "@chakra-ui/layout";
 import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../Services/AdminServices";
 
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState<any>();
+  const [password, setPassword] = useState<any>();
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
 
+  const submitHandler = async () => {
+    setLoading(true);
+    if (!email || !password) {
+      toast({
+        title: "Please fill all the fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
 
-  const submitHandler = async () => {  };
+      });
+      setLoading(false);
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json"
+        },
+      };
+      const userData = { email, password }
+      const { data } = await login(userData, config)
+
+      toast({
+        title: 'Login successful',
+        // description: "We've created your account for you.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      setLoading(false);
+      navigate('/chats');
+
+    } catch (error: any) {
+      toast({
+        title: 'Error occured',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  }
+
 
   return (
     <VStack spacing="10px">
@@ -60,7 +109,8 @@ const Login = () => {
         colorScheme="red"
         width="100%"
         onClick={() => {
-          
+          setEmail("guest@example.com");
+          setPassword("123456");
         }}
       >
         Get Guest User Credentials
