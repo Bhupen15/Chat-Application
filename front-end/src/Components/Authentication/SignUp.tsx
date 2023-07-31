@@ -26,64 +26,64 @@ const SignUp = () => {
 
     const submitHandler = async () => {
         setLoading(true);
-  if(!name || !email|| !password || !confirmpassword){
-    toast({
-        title: "Please fill all the fields",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom"
-    })
-    setLoading(false);
-    return;
-  }
-  if(password !== confirmpassword){
-    toast({
-        title: "Please fill all the fields>>>pass",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom"
-    })
+        if (!name || !email || !password || !confirmpassword) {
+            toast({
+                title: "Please fill all the fields",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            })
+            setLoading(false);
+            return;
+        }
+        if (password !== confirmpassword) {
+            toast({
+                title: "Please fill all the fields>>>pass",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            })
 
-    return;
+            return;
 
-  }
+        }
 
-  try {
-    const config = {
-        headers:{
-            "Content-Type":"application/json"
-        },
-    };
+        try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            };
 
-    const userData = {name, email, password, pic }
-    const {data} = await register(userData, config)
-    
-    toast({
-        title: 'Registration successful',
-        // description: "We've created your account for you.",
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-    });
-   
-    localStorage.setItem('userInfo', JSON.stringify(data));
-    setLoading(false);
-    navigate('/chats');
-  
-  }catch(error: any){
-    toast({
-        title: 'Error occured',
-        description: error.response.data.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-    });
-  }
-}
+            const userData = { name, email, password, pic }
+            const { data } = await register(userData, config)
+
+            toast({
+                title: 'Registration successful',
+                // description: "We've created your account for you.",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+
+            localStorage.setItem('userInfo', JSON.stringify(data));
+            setLoading(false);
+            navigate('/chats');
+
+        } catch (error: any) {
+            toast({
+                title: 'Error occured',
+                description: error.response.data.message,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        }
+    }
     const postDetails = (pics: any) => {
         setLoading(true);
         if (pics === undefined) {
